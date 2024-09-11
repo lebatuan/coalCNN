@@ -36,7 +36,7 @@ BiasMatrix = repmat(B,1,Q);  % N*Q
 tempH = IW * P + BiasMatrix;
 switch TF
        case 'sig'
-              H1 = 1 ./ (1 + exp(-tempH));  % N*Q  第一个隐含层输出
+              H1 = 1 ./ (1 + exp(-tempH));  % N*Q  
        case 'sin'
               H1 = sin(tempH);
        case 'hardlim'
