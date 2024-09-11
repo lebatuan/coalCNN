@@ -100,44 +100,44 @@ class Net(nn.Module):
         return x
 
 
-# 创建网络模型
+
 net = Net()
 if torch.cuda.is_available():
     net = net.cuda()
-# 损失函数
+
 loss_fn = nn.CrossEntropyLoss()
-# 优化器
+
 optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
 
-# 记录训练次数
+
 total_train_step = 0
-# 记录测试次数
+
 total_test_step = 0
-# 定义训练的轮数
+
 epoch = 100
 
 for i in range(epoch):
-    print("-----第 {} 轮开始了-----".format(i + 1))
-    # 训练
+    print("-----Iteration {} -----".format(i + 1))
+    
     net.train()
     for k in train_dataloader:
-        # 将训练样本投入网络，并得到输出
+       
         imgs, targets = k
         if torch.cuda.is_available():
             imgs = imgs.cuda()
             targets = targets.cuda()
         outputs = net(imgs)
-        # 计算网络输出的损失
+       
         loss = loss_fn(outputs, targets.squeeze(1).long())
-        # 优化器优化损失
+      
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        # 训练完成，训练次数+1，输出当前的损失值
+      
         total_train_step = total_train_step + 1
         if total_train_step % 10 == 0:
-            print("第 {} 次训练时，损失为 {} ".format(total_train_step, loss.item()))
-    # 测试
+            print("Iteration {} loss {} ".format(total_train_step, loss.item()))
+    
     net.eval()
     total_test_loss = 0
     total_accuracy = 0
@@ -153,5 +153,5 @@ for i in range(epoch):
             accuracy = (outputs.argmax(1) == targets.squeeze(1).long()).sum()
             total_accuracy = total_accuracy + accuracy
     total_test_step = total_test_step + 1
-    #print("整体测试集上的损失为 {} ".format(total_test_loss))
-    print("整体测试集上的准确率为 {} ".format(total_accuracy / 119))
+   
+    print("acc is {} ".format(total_accuracy / 119))
