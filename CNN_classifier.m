@@ -41,7 +41,7 @@ options = trainingOptions('sgdm',...
     'Plots','training-progress');
 
 net = trainNetwork(trainD,targetD',layers,options);
-%% 做特征提取
+
 %layer = 'pool2';
 %featuresTrain = activations(net,trainD,layer,'OutputAs','rows');
 
