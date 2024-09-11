@@ -4,9 +4,9 @@ function [IW,B,T_IW,T_B,TLW,J,N,TF,TYPE] = elm1(P,T,J,N,TF,TYPE,IW10,B10)
 % [IW,B,LW,TF,TYPE] = elmtrain(P,T,N,TF,TYPE)
 % Description
 % Input
-% P   - Input Matrix of Training Set  (R*Q)  R个输入神经元
-% T   - Output Matrix of Training Set (S*Q)  S个输出神经元
-% N   - Number of Hidden Neurons (default = Q)  N个隐含层神经元
+% P   - Input Matrix of Training Set  (R*Q)  
+% T   - Output Matrix of Training Set (S*Q)  
+% N   - Number of Hidden Neurons (default = Q)  
 % TF  - Transfer Function:
 %       'sig' for Sigmoidal function (default)
 %       'sin' for Sine function
@@ -45,7 +45,7 @@ end
 
 [R,Q] = size(P);
 if TYPE  == 1
-    T  = ind2vec(T); %稀疏矩阵转换
+    T  = ind2vec(T); 
 end
 [S,Q] = size(T);
 
@@ -55,14 +55,14 @@ IW=IW10;
 % Randomly Generate the Bias Matrix
 %B = rand(N,1);
 B=B10;
-%%%%%%%  BiasMatrix = repmat(B,1,Q);  % N*Q       原来的程序
+%%%%%%%  BiasMatrix = repmat(B,1,Q);  % N*Q      
 ind = ones(1,Q);
-BiasMatrix = B(:,ind);                        % 本论文介绍的程序
+BiasMatrix = B(:,ind);                       
 % Calculate the Layer Output Matrix H
 tempH = IW * P + BiasMatrix;
 switch TF
     case 'sig'
-        H = 1 ./ (1 + exp(-tempH));  % N*Q    pinv(H')为N*Q; 第一个隐含层输出
+        H = 1 ./ (1 + exp(-tempH));  % N*Q    pinv(H')涓篘*Q; 
     case 'sin'
         H = sin(tempH);
     case 'hardlim'
@@ -73,7 +73,7 @@ T_B = []; T_IW = [];
 for i = 1:1:J-1
      LW = pinv(H')*T';
   % if(N<Q)
-    %  LW = (pinv(rand*eye(Q,Q)+H'*H)*H')'* T';  % N*S   如果隐含层节点个数小于训练样本个数时
+    %  LW = (pinv(rand*eye(Q,Q)+H'*H)*H')'* T';  % N*S   
  %  elseif(N>Q)
   %    LW = (H'*pinv(rand*eye(N,N)+H*H'))'* T';  % N*S
   % end
@@ -85,7 +85,7 @@ for i = 1:1:J-1
             WH = (log(H_iE)-log(ones(size(H_iE))-H_iE))*pinv(M);
     end
   
-    B1=WH(:,1);  % N*Q  第i+1层的偏差
+    B1=WH(:,1);  % N*Q  
     IW1=WH(:,2:size(H,1)+1);  % N*N
     TtempH = IW1*H+B1(:,ind);
   
@@ -105,7 +105,7 @@ end
 
   TLW = pinv(H') * T';
 %if(N<Q)
- %  TLW = (pinv(rand*eye(Q,Q)+H'*H)*H')'* T';  % N*S   加入正则化项后
+ %  TLW = (pinv(rand*eye(Q,Q)+H'*H)*H')'* T';  % N*S   
 %  elseif(N>Q)
 %    TLW = (H'*pinv(rand*eye(N,N)+H*H'))'* T';  % N*S
 %end
